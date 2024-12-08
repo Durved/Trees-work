@@ -19,6 +19,25 @@ class Tree:
         for value in values:
             self.insert(value)
 
+    def find_with_one_child(self):
+        return self._find_with_one_child(self.root)
+
+    def _find_with_one_child(self, node):
+        result = []
+        is_one_child = False
+
+        if node.left is not None:
+            result.extend(self._find_with_one_child(node.left))
+            is_one_child = not is_one_child
+        if node.right is not None:
+            result.extend(self._find_with_one_child(node.right))
+            is_one_child = not is_one_child
+
+        if is_one_child:
+            result.append(node.value)
+
+        return result
+
     def find_leafs(self):
         return self._find_leaf(self.root)
     
@@ -65,28 +84,28 @@ class Tree:
         return self._is_balanced(node.left) and self._is_balanced(node.right)
     
     
-    # def print_tree(self):
-    #     self._print_tree(self.root)
+    def print_tree(self):
+        self._print_tree(self.root)
 
-    # def _print_tree(self, node, level=0):
-    #     if node is not None:
-    #         self._print_tree(node.right, level + 1)
-    #         print(' ' * level, node.value)
-    #         self._print_tree(node.left, level + 1)
+    def _print_tree(self, node, level=0):
+        if node is not None:
+            self._print_tree(node.right, level + 1)
+            print(' ' * level, node.value)
+            self._print_tree(node.left, level + 1)
     
     
 
 tree = Tree()
-# tree.build_tree(map(int, "7 3 2 1 9 5 4 6 8 0".split()[:-1]))
+tree.build_tree(map(int, "7 3 2 1 9 5 4 6 8 0".split()[:-1]))
 # tree.build_tree(map(int, "1 2 3 4 5 6 7 8 9 0".split()[:-1]))
 # tree.print_tree()
 
-tree.build_tree(map(int, input().split()[:-1]))
+# tree.build_tree(map(int, input().split()[:-1]))
 
 
-# print(*tree.find_leafs(), sep='\n')
+print(*tree.find_with_one_child(), sep='\n')
 
-if tree.is_balanced():
-    print('YES')
-else:
-    print('NO')
+# if tree.is_balanced():
+#     print('YES')
+# else:
+#     print('NO')
